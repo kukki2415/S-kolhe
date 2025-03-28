@@ -1,0 +1,257 @@
+Q1. Create a Simple Application Which Send ―Hello! message from one activity
+to anotherwith help of Button (Use Intent).
+
+Name: MessageApp
+Package name: com.example.messageapp
+
+##activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:gravity="center"
+android:padding="16dp">
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="First Activity"
+android:textSize="20sp"
+android:textStyle="bold"/>
+
+<Button
+android:id="@+id/sendMessageButton"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+
+android:text="Send Message"
+android:layout_marginTop="16dp"/>
+</LinearLayout>
+
+Step 4: Create SecondActivity.java
+• Name: SecondActivity
+##activity_second.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:gravity="center"
+android:padding="16dp">
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Second Activity"
+android:textSize="20sp"
+android:textStyle="bold"/>
+
+<TextView
+android:id="@+id/messageTextView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:textSize="18sp"
+
+android:layout_marginTop="16dp"/>
+</LinearLayout>
+
+##SecondActivity.java
+package com.example.messageapp;
+
+import android.os.Bundle;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SecondActivity extends AppCompatActivity {
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_second);
+
+// Initialize the TextView
+TextView messageTextView = findViewById(R.id.messageTextView);
+
+// Get the message from the Intent
+String message = getIntent().getStringExtra("message");
+
+// Display the message
+if (message != null) {
+messageTextView.setText(message);
+} else {
+messageTextView.setText("No message received");
+
+}
+}
+}
+
+##MainActivity.java
+package com.example.messageapp;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+
+// Initialize the button
+Button sendMessageButton = findViewById(R.id.sendMessageButton);
+
+// Set click listener for the button
+sendMessageButton.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+// Create an Intent to start SecondActivity
+
+Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+
+// Add the "Hello!" message to the Intent
+intent.putExtra("message", "Hello!");
+
+// Start the SecondActivity
+startActivity(intent);
+}
+});
+}
+}
+
+##AndroidManifest.xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.messageapp">
+
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.MessageApp">
+<activity
+android:name=".SecondActivity"
+android:exported="false"/>
+<activity
+
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+Q2. Create an Android Application that Demonstrates ListView and Onclick of
+List Displaythe Toast.
+
+Name: ListViewApp
+Package name: com.example.listviewapp
+
+##activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="16dp">
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Select an Item"
+
+android:textSize="20sp"
+android:textStyle="bold"
+android:layout_gravity="center"/>
+
+<ListView
+android:id="@+id/listView"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_marginTop="16dp"/>
+</LinearLayout>
+
+##MainActivity.java
+package com.example.listviewapp;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+// Array of items to display in the ListView
+private String[] items = {"Apple", "Banana", "Orange", "Grapes", "Mango"};
+
+@Override
+
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+
+// Initialize the ListView
+ListView listView = findViewById(R.id.listView);
+
+// Create an ArrayAdapter to populate the ListView
+ArrayAdapter<String> adapter = new ArrayAdapter<>(
+this,
+android.R.layout.simple_list_item_1, // Default layout for list items
+items
+);
+
+// Set the adapter to the ListView
+listView.setAdapter(adapter);
+
+// Set an OnItemClickListener for the ListView
+listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+@Override
+public void onItemClick(AdapterView<?> parent, View view, int position,
+long id) {
+// Get the selected item
+String selectedItem = items[position];
+
+// Display a Toast with the selected item
+Toast.makeText(MainActivity.this, "You clicked: " + selectedItem,
+Toast.LENGTH_SHORT).show();
+}
+
+});
+}
+}
+
+##AndroidManifest.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.listviewapp">
+
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.ListViewApp">
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+
